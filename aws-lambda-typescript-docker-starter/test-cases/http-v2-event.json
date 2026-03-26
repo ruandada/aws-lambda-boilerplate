@@ -1,0 +1,15 @@
+{
+  "version": "2.0",
+  "routeKey": "GET /api/greet/{name}",
+  "rawPath": "/api/greet/jarry",
+  "rawQueryString": "from=local-v2",
+  "queryStringParameters": {
+    "from": "local-v2"
+  },
+  "requestContext": {
+    "http": {
+      "method": "GET",
+      "path": "/api/greet/jarry"
+    }
+  }
+}

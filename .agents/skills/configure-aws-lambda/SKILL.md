@@ -134,17 +134,23 @@ mkdir -p .github/workflows
 cp .agents/skills/configure-aws-lambda/resources/github-actions.template.yaml .github/workflows/deploy-lambda-${FUNCTION_NAME}.yaml
 ```
 
-Then update `build-function` in `.github/workflows/deploy-lambda-${FUNCTION_NAME}.yaml`:
+Then update `name`, `on.push.paths`, and `build-function` in `.github/workflows/deploy-lambda-${FUNCTION_NAME}.yaml`:
 
-- Replace the template default value with `<lambda_directory>` (the first skill argument).
+- Replace workflow `name` with a function-specific name (for example: `Deploy Lambda (${FUNCTION_NAME})`) to avoid ambiguity when multiple Lambda workflows exist.
+- Replace `on.push.paths` template default value with `<lambda_directory>/**` so push trigger only runs when this Lambda directory changes.
+- Replace `build-function` template default value with `<lambda_directory>` (the first skill argument).
 - Example: if invoked as `/configure-aws-lambda aws-lambda-typescript-docker-starter`, then:
   - workflow file: `.github/workflows/deploy-lambda-aws-lambda-typescript-docker-starter.yaml`
+  - `name: Deploy Lambda (aws-lambda-typescript-docker-starter)`
+  - `paths: [aws-lambda-typescript-docker-starter/**]` (or equivalent YAML list form)
   - `build-function: aws-lambda-typescript-docker-starter`
 
 Expected behavior:
 
 - Workflow exists in current repository under `.github/workflows`.
 - Workflow filename must include the Lambda function/project name to avoid conflicts when multiple Lambdas exist.
+- Workflow `name` is function-specific, not a shared generic label.
+- `on.push.paths` always points to the selected Lambda project directory (`<lambda_directory>/**`), never hardcoded to unrelated values.
 - `build-function` always points to the selected Lambda project directory, never hardcoded to unrelated values.
 - If target workflow file already exists, show diff and ask for explicit confirmation before overwrite.
 
@@ -157,7 +163,7 @@ If you want a full guided flow, run:
 3. `init-oidc-provider.sh`
 4. `init-deployment-role-permissions.sh`
 5. `init-execution-role-permissions.sh`
-6. Configure `.github/workflows/deploy-lambda-<function-name>.yaml` from `github-actions.template.yaml` and replace `build-function`
+6. Configure `.github/workflows/deploy-lambda-<function-name>.yaml` from `github-actions.template.yaml` and replace `name`, `on.push.paths`, and `build-function`
 
 ---
 

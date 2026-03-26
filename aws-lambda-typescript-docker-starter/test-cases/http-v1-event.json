@@ -1,0 +1,7 @@
+{
+  "httpMethod": "GET",
+  "path": "/api/greet/jarry",
+  "queryStringParameters": {
+    "from": "local-v1"
+  }
+}

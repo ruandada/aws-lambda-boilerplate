@@ -39,7 +39,7 @@ pnpm run typecheck
 You can invoke Lambda locally with an event JSON file:
 
 ```bash
-pnpm test-event src/entrypoints/test-events/sqs-event.json
+pnpm test-event test-cases/sqs-event.json
 ```
 
 If no handler matches the event shape, the command exits with an error.

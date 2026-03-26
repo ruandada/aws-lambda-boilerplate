@@ -1,4 +1,4 @@
-import { createApp } from './app'
+import { createApp } from '../app'
 
 const DEFAULT_PORT = 3000
 const parsedPort = Number(process.env.PORT)

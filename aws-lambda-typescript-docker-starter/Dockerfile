@@ -19,5 +19,6 @@ RUN corepack enable
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 RUN pnpm install --prod --frozen-lockfile
 COPY --from=build /app/dist ./dist
+
 # Lambda handler export: dist/lambda.js -> exports.handler
-CMD ["dist/lambda.handler"]
+CMD ["dist/entrypoints/lambda.handler"]

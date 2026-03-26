@@ -1,8 +1,7 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import type { APIGatewayProxyEventV2, Context } from 'aws-lambda'
 import { handler } from './lambda'
-import { createApiGatewayV2Event, createContext } from './test-utils'
+import { createApiGatewayV2Event, createContext } from '../test-utils'
 
 test('handler returns hello world for API Gateway v2 event', async () => {
   const event = createApiGatewayV2Event('/')

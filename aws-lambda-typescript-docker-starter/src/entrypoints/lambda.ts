@@ -1,7 +1,7 @@
 import serverlessExpress from '@codegenie/serverless-express'
 import type { Context, Handler } from 'aws-lambda'
 import { EventEmitter } from 'node:events'
-import { createApp } from './app'
+import { createApp } from '../app'
 import type { ConfigureResult } from '@codegenie/serverless-express/src/configure'
 import type Framework from '@codegenie/serverless-express/src/frameworks'
 

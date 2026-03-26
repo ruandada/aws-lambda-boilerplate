@@ -1,0 +1,12 @@
+node_modules
+dist
+.git
+.DS_Store
+openspec
+docs
+docker
+scripts
+config
+*.log
+coverage
+*.test.ts

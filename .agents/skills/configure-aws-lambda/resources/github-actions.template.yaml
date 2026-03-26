@@ -1,0 +1,32 @@
+name: Deploy Lambda
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      # Required: this action no longer performs checkout internally.
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Deploy AWS Lambda
+        id: deploy
+        uses: ruandada/deploy-aws-lambda@v1
+        with:
+          build-function: aws-lambda-typescript-docker-starter
+
+      - name: Print outputs
+        run: |
+          echo "latest=${{ steps.deploy.outputs.image-uri-latest }}"
+          echo "sha=${{ steps.deploy.outputs.image-uri-sha }}"
+          echo "tag=${{ steps.deploy.outputs.image-tag-sha }}"
+          echo "url=${{ steps.deploy.outputs.lambda-url }}"
+          echo "apigw=${{ steps.deploy.outputs.api-gateway-url }}"

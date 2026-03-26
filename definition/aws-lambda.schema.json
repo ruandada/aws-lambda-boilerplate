@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/ruandada/aws-lambda-boilerplate/main/definition/aws-lambda.schema.json",
+  "title": "Lambda Container Deployment Config",
+  "description": "Repository-level deployment metadata aligned with AWS SAM field naming.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "FunctionName",
+    "ImageRepository",
+    "Region",
+    "AccountId",
+    "DeploymentRoleName",
+    "ExecutionRoleName",
+    "Architecture"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "format": "uri",
+      "description": "JSON schema URI for editor validation."
+    },
+    "FunctionName": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Lambda function name."
+    },
+    "ImageRepository": {
+      "type": "string",
+      "minLength": 1,
+      "description": "ECR repository name (without registry host)."
+    },
+    "Region": {
+      "type": "string",
+      "pattern": "^[a-z]{2}-[a-z]+-[0-9]{1}$",
+      "description": "AWS region, for example us-east-1."
+    },
+    "AccountId": {
+      "type": "string",
+      "pattern": "^[0-9]{12}$",
+      "description": "AWS account ID used for ECR/Lambda operations."
+    },
+    "DeploymentRoleName": {
+      "type": "string",
+      "minLength": 1,
+      "description": "IAM role name used for GitHub Actions OIDC deployment."
+    },
+    "ExecutionRoleName": {
+      "type": "string",
+      "minLength": 1,
+      "description": "IAM role name used for Lambda execution."
+    },
+    "Architecture": {
+      "type": "string",
+      "enum": ["x86_64", "arm64"],
+      "description": "Lambda instruction set architecture.",
+      "default": "x86_64"
+    }
+  }
+}

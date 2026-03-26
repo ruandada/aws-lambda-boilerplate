@@ -1,0 +1,30 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "lambda.amazonaws.com"
+      },
+      "Action": "sts:AssumeRole"
+    },
+    {
+      "Sid": "GitHubActionsOIDCTrust",
+      "Effect": "Allow",
+      "Principal": {
+        "Federated": "{{OIDC_PROVIDER_ARN}}"
+      },
+      "Action": "sts:AssumeRoleWithWebIdentity",
+      "Condition": {
+        "StringEquals": {
+          "token.actions.githubusercontent.com:aud": "sts.amazonaws.com"
+        },
+        "StringLike": {
+          "token.actions.githubusercontent.com:sub": [
+            "repo:{{GITHUB_OWNER}}/{{GITHUB_REPO}}:ref:refs/heads/{{GITHUB_BRANCH}}"
+          ]
+        }
+      }
+    }
+  ]
+}

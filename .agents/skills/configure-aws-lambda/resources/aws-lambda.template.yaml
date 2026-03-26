@@ -1,0 +1,22 @@
+$schema: https://raw.githubusercontent.com/ruandada/aws-lambda-boilerplate/refs/heads/main/definition/aws-lambda.schema.json
+
+# Lambda function name.
+FunctionName: "{{FUNCTION_NAME}}"
+
+# ECR repository name (without registry host). Equals to FunctionName by default.
+ImageRepository: "{{IMAGE_REPOSITORY}}"
+
+# AWS region for deployments.
+Region: "{{REGION}}"
+
+# AWS account ID.
+AccountId: "{{ACCOUNT_ID}}"
+
+# IAM role name used for GitHub Actions OIDC deployment.
+DeploymentRoleName: "{{DEPLOYMENT_ROLE_NAME}}"
+
+# IAM role name used for lambda execution.
+ExecutionRoleName: "{{EXECUTION_ROLE_NAME}}"
+
+# Lambda instruction set architecture. Options: x86_64, arm64
+Architecture: "{{ARCHITECTURE}}"

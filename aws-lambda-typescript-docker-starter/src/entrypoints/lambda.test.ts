@@ -14,8 +14,8 @@ test('handler returns hello world for API Gateway v2 event', async () => {
   assert.equal(response.body, JSON.stringify({ message: 'Hello World' }))
 })
 
-test('handler rejects non-HTTP event', async () => {
-  const event = { Records: [{ eventSource: 'aws:sqs' }] }
+test('handler rejects unsupported event', async () => {
+  const event = { foo: 'bar' }
   const context = createContext()
 
   await assert.rejects(async () => handler(event, context), /Unsupported event type/)

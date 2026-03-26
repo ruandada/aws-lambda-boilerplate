@@ -19,7 +19,7 @@ export async function createEventRegistry(): Promise<EventRegistry> {
 
   // You can register other non-HTTP events here.
   registry.registerSqsEvent(async (event) => {
-    console.log('SQS event received', event)
+    console.log('SQS event received.')
   })
 
   return registry

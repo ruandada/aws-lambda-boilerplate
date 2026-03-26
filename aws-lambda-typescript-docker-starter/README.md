@@ -34,6 +34,16 @@ pnpm run build
 pnpm run typecheck
 ```
 
+## Local event testing (non-HTTP)
+
+You can invoke Lambda locally with an event JSON file:
+
+```bash
+pnpm test-event src/entrypoints/test-events/sqs-event.json
+```
+
+If no handler matches the event shape, the command exits with an error.
+
 ## Deployment
 
 Deployment guidance (AWS / Docker image / GitHub Actions OIDC) is documented in the repository root README:

@@ -9,6 +9,7 @@
     "build": "npm run clean && tsc -p tsconfig.build.json",
     "typecheck": "tsc --noEmit",
     "test": "tsx --test src/**/*.test.ts",
+    "test-event": "tsx src/entrypoints/test-event.ts",
     "dev": "tsx watch src/entrypoints/local.ts",
     "start": "node dist/entrypoints/local.js",
     "start:lambda": "node dist/entrypoints/lambda.js"

@@ -39,6 +39,10 @@ main() {
   else
     local exec_trust_file
     exec_trust_file="$(mktemp)"
+    local current_exec_trust_file
+    current_exec_trust_file="$(mktemp)"
+    local merged_exec_trust_file
+    merged_exec_trust_file="$(mktemp)"
 
     local resources_dir
     resources_dir="${SCRIPT_DIR}/../resources/policies"
@@ -47,10 +51,15 @@ main() {
       "${exec_trust_file}"
 
     if aws iam get-role --role-name "${EXECUTION_ROLE_NAME}" >/dev/null 2>&1; then
+      aws iam get-role \
+        --role-name "${EXECUTION_ROLE_NAME}" \
+        --query 'Role.AssumeRolePolicyDocument' \
+        --output json > "${current_exec_trust_file}"
+      merge_policy_documents "${current_exec_trust_file}" "${exec_trust_file}" "${merged_exec_trust_file}"
       aws iam update-assume-role-policy \
         --role-name "${EXECUTION_ROLE_NAME}" \
-        --policy-document "file://${exec_trust_file}" >/dev/null
-      ok "Updated execution role trust policy: ${EXECUTION_ROLE_NAME}"
+        --policy-document "file://${merged_exec_trust_file}" >/dev/null
+      ok "Incrementally merged execution role trust policy: ${EXECUTION_ROLE_NAME}"
     else
       aws iam create-role \
         --role-name "${EXECUTION_ROLE_NAME}" \
@@ -58,7 +67,7 @@ main() {
       ok "Created execution role: ${EXECUTION_ROLE_NAME}"
     fi
 
-    rm -f "${exec_trust_file}"
+    rm -f "${exec_trust_file}" "${current_exec_trust_file}" "${merged_exec_trust_file}"
   fi
 
   ensure_execution_basic_policy "${EXECUTION_ROLE_NAME}"

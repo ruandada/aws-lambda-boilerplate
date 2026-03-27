@@ -111,7 +111,8 @@ load_lambda_config() {
   DEPLOYMENT_ROLE_NAME="$(yaml_get_required "${config_file}" "DeploymentRoleName")"
   EXECUTION_ROLE_NAME="$(yaml_get_required "${config_file}" "ExecutionRoleName")"
   EXECUTION_ROLE_ARN="arn:aws:iam::${ACCOUNT_ID}:role/${EXECUTION_ROLE_NAME}"
-  INLINE_POLICY_NAME="${DEPLOYMENT_ROLE_NAME}-inline-policy"
+  # Keep policy name function-scoped to avoid cross-function overwrites on shared roles.
+  INLINE_POLICY_NAME="${FUNCTION_NAME}-deployment-inline-policy"
 }
 
 ensure_account_matches_config() {
@@ -187,5 +188,70 @@ def repl(match):
 
 rendered = re.sub(r"\{\{([A-Z0-9_]+)\}\}", repl, template)
 out_file.write_text(rendered)
+PY
+}
+
+merge_policy_documents() {
+  local base_policy_file="$1"
+  local desired_policy_file="$2"
+  local output_file="$3"
+
+  python3 - <<'PY' "${base_policy_file}" "${desired_policy_file}" "${output_file}"
+import json
+import sys
+from pathlib import Path
+
+base_path = Path(sys.argv[1])
+desired_path = Path(sys.argv[2])
+output_path = Path(sys.argv[3])
+
+base_doc = json.loads(base_path.read_text())
+desired_doc = json.loads(desired_path.read_text())
+
+base_statements = base_doc.get("Statement", [])
+desired_statements = desired_doc.get("Statement", [])
+
+if isinstance(base_statements, dict):
+    base_statements = [base_statements]
+if isinstance(desired_statements, dict):
+    desired_statements = [desired_statements]
+
+def to_list(value):
+    if value is None:
+        return []
+    return value if isinstance(value, list) else [value]
+
+def statement_key(stmt):
+    sid = stmt.get("Sid")
+    if isinstance(sid, str) and sid:
+        return f"sid:{sid}"
+
+    key_payload = {
+        "Effect": stmt.get("Effect"),
+        "Action": sorted(to_list(stmt.get("Action"))),
+        "NotAction": sorted(to_list(stmt.get("NotAction"))),
+        "Principal": stmt.get("Principal"),
+        "NotPrincipal": stmt.get("NotPrincipal"),
+        "Condition": stmt.get("Condition"),
+    }
+    return "shape:" + json.dumps(key_payload, sort_keys=True, separators=(",", ":"))
+
+merged_statements = list(base_statements)
+index_by_key = {}
+for idx, stmt in enumerate(merged_statements):
+    index_by_key[statement_key(stmt)] = idx
+
+for desired_stmt in desired_statements:
+    key = statement_key(desired_stmt)
+    if key in index_by_key:
+        merged_statements[index_by_key[key]] = desired_stmt
+    else:
+        merged_statements.append(desired_stmt)
+
+merged_doc = dict(base_doc)
+merged_doc["Version"] = base_doc.get("Version", desired_doc.get("Version", "2012-10-17"))
+merged_doc["Statement"] = merged_statements
+
+output_path.write_text(json.dumps(merged_doc, indent=2) + "\n")
 PY
 }

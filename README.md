@@ -12,7 +12,6 @@ This repository includes:
   - `aws-lambda-typescript-docker-starter`
   - `aws-lambda-golang-docker-starter`
 - A local agent skill (`/configure-aws-lambda`) to bootstrap AWS IAM + GitHub Actions deployment
-- Reusable templates for `aws-lambda.yaml`, workflow, and IAM policies
 
 ---
 
@@ -32,7 +31,6 @@ This repository includes:
 - Local Lambda event simulation for HTTP and async event shapes
 - Lambda container image deployment workflow
 - GitHub Actions OIDC-based deployment (no long-lived AWS keys in GitHub secrets)
-- Consistent project convention through `aws-lambda.yaml`
 - Easy to scale to multiple Lambda services in one repository
 
 ## Project Structure
@@ -83,7 +81,7 @@ For detailed local workflows (event replay, extra commands, build checks), see:
 - `aws-lambda-typescript-docker-starter/README.md`
 - `aws-lambda-golang-docker-starter/README.md`
 
-### 3) Run the local agent skill to configure AWS + GitHub Actions
+### 3) **Talk** to your LLM agent, using skill to configure AWS + GitHub Actions
 
 From repository root, run:
 

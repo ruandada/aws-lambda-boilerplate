@@ -107,6 +107,11 @@ Expected behavior:
 
 - Create or update deployment role trust policy for GitHub OIDC and Lambda service principal.
 - Apply inline deployment policy (ECR + Lambda deploy + `iam:PassRole`) from policy templates.
+- IAM updates must be **incremental merge-only**:
+  - Never overwrite existing role policy documents wholesale.
+  - Preserve existing statements that are unrelated to this Lambda function/project.
+  - Only add missing actions/resources/conditions required by current function.
+  - This is mandatory when multiple Lambda functions share one IAM role, to prevent cross-function permission loss.
 
 ### Step 5 - Initialize Execution role permissions
 
@@ -123,6 +128,7 @@ Expected behavior:
 - Handle shared-role case:
   - If `ExecutionRoleName == DeploymentRoleName`, do not overwrite trust policy in a way that removes OIDC trust.
   - Preserve OIDC trust and verify Lambda principal is still allowed.
+  - For policy updates on shared roles, perform merge-only additions and never remove unrelated existing permissions.
 
 ### Step 6 - Configure GitHub Actions workflow
 
@@ -172,4 +178,5 @@ If you want a full guided flow, run:
 - Always confirm all `aws-lambda.yaml` parameters and resolved GitHub values with the user before writing yaml and before IAM mutations.
 - Always enforce account consistency between current AWS identity and `aws-lambda.yaml` after confirmation.
 - Keep all IAM operations idempotent.
+- For every IAM role update (trust/inline/managed-policy attachment logic), use additive/incremental changes only; never replace whole role policy content when existing statements are present.
 - If an IAM API call fails due to permission denial, report the exact failed action and stop.

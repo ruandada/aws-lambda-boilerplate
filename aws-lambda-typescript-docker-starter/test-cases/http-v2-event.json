@@ -3,6 +3,9 @@
   "routeKey": "GET /api/greet/{name}",
   "rawPath": "/api/greet/jarry",
   "rawQueryString": "from=local-v2",
+  "headers": {
+    "host": "localhost"
+  },
   "queryStringParameters": {
     "from": "local-v2"
   },
@@ -11,5 +14,6 @@
       "method": "GET",
       "path": "/api/greet/jarry"
     }
-  }
+  },
+  "isBase64Encoded": false
 }

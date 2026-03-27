@@ -1,6 +1,6 @@
 import type { Context } from 'aws-lambda'
 import { createEventRegistry } from '../registry'
-import { EventRegistry } from './event-registry'
+import { EventRegistry } from '../events/event-registry'
 
 let registryInstancePromise: Promise<EventRegistry> | null = null
 

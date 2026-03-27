@@ -4,13 +4,14 @@
 [![AWS Lambda](https://img.shields.io/badge/AWS-Lambda-orange)](https://aws.amazon.com/lambda/)
 [![GitHub Actions](https://img.shields.io/badge/CI-GitHub_Actions-blue)](https://github.com/features/actions)
 
-Production-oriented boilerplate for building and deploying AWS Lambda functions with TypeScript or Go, Docker image packaging, and GitHub Actions OIDC.
+Production-oriented boilerplate for building and deploying AWS Lambda functions with TypeScript, Go, or Python, Docker image packaging, and GitHub Actions OIDC.
 
 This repository includes:
 
 - Ready-to-copy Lambda starter projects:
   - `aws-lambda-typescript-docker-starter`
   - `aws-lambda-golang-docker-starter`
+  - `aws-lambda-python-docker-starter`
 - A local agent skill (`/configure-aws-lambda`) to bootstrap AWS IAM + GitHub Actions deployment
 
 ---
@@ -27,7 +28,7 @@ This repository includes:
 
 ## Why this boilerplate
 
-- Fast local development with either TypeScript + Express or Go + net/http
+- Fast local development with TypeScript + Express, Go + net/http, or Python + Flask
 - Local Lambda event simulation for HTTP and async event shapes
 - Lambda container image deployment workflow
 - GitHub Actions OIDC-based deployment (no long-lived AWS keys in GitHub secrets)
@@ -39,6 +40,7 @@ This repository includes:
 .
 ├── aws-lambda-typescript-docker-starter/    # TypeScript starter Lambda project
 ├── aws-lambda-golang-docker-starter/        # Go starter Lambda project
+├── aws-lambda-python-docker-starter/        # Python starter Lambda project
 ├── definition/aws-lambda.schema.json        # Schema for aws-lambda.yaml
 └── .agents/skills/configure-aws-lambda/     # Agent skill, scripts, templates, IAM policies
 ```
@@ -52,6 +54,7 @@ This repository includes:
 - A GitHub repository connected as your `origin` remote
 - For TypeScript starter: Node.js (latest LTS recommended) and `pnpm`
 - For Go starter: Go `1.24+`
+- For Python starter: Python `3.12+`
 
 ### 1) Copy a boilerplate directory
 
@@ -61,6 +64,8 @@ From the repository root, copy a starter to your own Lambda directory:
 cp -R aws-lambda-typescript-docker-starter my-lambda-service
 # or
 cp -R aws-lambda-golang-docker-starter my-lambda-service
+# or
+cp -R aws-lambda-python-docker-starter my-lambda-service
 ```
 
 You can choose any target folder name. It becomes your Lambda function/project directory.
@@ -74,12 +79,15 @@ cd my-lambda-service
 pnpm install && pnpm run dev   # TypeScript starter
 # or
 go mod tidy && go run ./cmd dev # Go starter
+# or
+python3 -m venv .venv && source .venv/bin/activate && python -m pip install -e ".[dev]" && python -m app.cli dev  # Python starter
 ```
 
 For detailed local workflows (event replay, extra commands, build checks), see:
 
 - `aws-lambda-typescript-docker-starter/README.md`
 - `aws-lambda-golang-docker-starter/README.md`
+- `aws-lambda-python-docker-starter/README.md`
 
 ### 3) **Talk** to your LLM agent, using skill to configure AWS + GitHub Actions
 

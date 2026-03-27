@@ -8,7 +8,7 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/ruandada/aws-lambda-boilerplate/aws-lambda-golang-docker-starter/internal/lambdaapp"
+	"github.com/ruandada/aws-lambda-boilerplate/aws-lambda-golang-docker-starter/internal/app"
 
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/spf13/cobra"
@@ -39,7 +39,7 @@ func newDevCmd() *cobra.Command {
 		Use:   "dev",
 		Short: "Start local HTTP server",
 		RunE: func(_ *cobra.Command, _ []string) error {
-			return lambdaapp.StartLocalServer(port)
+			return app.StartLocalServer(port)
 		},
 	}
 
@@ -65,7 +65,7 @@ func newTestEventCmd() *cobra.Command {
 				return err
 			}
 
-			result, err := lambdaapp.HandleRawEvent(context.Background(), eventPayload)
+			result, err := app.HandleRawEvent(context.Background(), eventPayload)
 			if err != nil {
 				return err
 			}
@@ -100,7 +100,7 @@ func newLambdaCmd() *cobra.Command {
 }
 
 func startLambdaRuntime() {
-	lambda.Start(lambda.NewHandler(lambdaapp.HandleRawEvent))
+	lambda.Start(lambda.NewHandler(app.HandleRawEvent))
 }
 
 func loadEventFile(path string) ([]byte, error) {

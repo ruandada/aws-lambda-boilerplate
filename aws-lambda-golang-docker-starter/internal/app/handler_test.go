@@ -1,4 +1,4 @@
-package lambdaapp
+package app
 
 import (
 	"context"

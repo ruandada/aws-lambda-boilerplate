@@ -1,4 +1,4 @@
-package lambdaapp
+package app
 
 import (
 	"encoding/json"
@@ -8,10 +8,10 @@ import (
 	"strings"
 )
 
-func StartLocalServer(port int) error {
+func NewMux() *http.ServeMux {
 	mux := http.NewServeMux()
 
-	mux.HandleFunc("GET /", func(w http.ResponseWriter, _ *http.Request) {
+	mux.HandleFunc("GET /{$}", func(w http.ResponseWriter, _ *http.Request) {
 		respondJSON(w, http.StatusOK, map[string]any{
 			"message": "Hello World",
 		})
@@ -30,6 +30,11 @@ func StartLocalServer(port int) error {
 		})
 	})
 
+	return mux
+}
+
+func StartLocalServer(port int) error {
+	mux := NewMux()
 	addr := fmt.Sprintf(":%d", port)
 	log.Printf("Local server is running on http://localhost:%d", port)
 	return http.ListenAndServe(addr, mux)

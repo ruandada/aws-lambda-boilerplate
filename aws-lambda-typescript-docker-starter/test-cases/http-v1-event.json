@@ -1,7 +1,17 @@
 {
   "httpMethod": "GET",
   "path": "/api/greet/jarry",
+  "headers": {
+    "Host": "localhost",
+    "Content-Type": "application/json"
+  },
   "queryStringParameters": {
     "from": "local-v1"
-  }
+  },
+  "requestContext": {
+    "identity": {
+      "sourceIp": "127.0.0.1"
+    }
+  },
+  "isBase64Encoded": false
 }

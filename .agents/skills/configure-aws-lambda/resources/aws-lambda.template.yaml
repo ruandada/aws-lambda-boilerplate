@@ -20,3 +20,6 @@ ExecutionRoleName: "{{EXECUTION_ROLE_NAME}}"
 
 # Lambda instruction set architecture. Options: x86_64, arm64
 Architecture: "{{ARCHITECTURE}}"
+
+# Whether to add or ensure an Amazon API Gateway trigger during deployment.
+EnableApiGateway: true

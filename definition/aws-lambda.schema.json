@@ -55,6 +55,11 @@
       "enum": ["x86_64", "arm64"],
       "description": "Lambda instruction set architecture.",
       "default": "x86_64"
+    },
+    "EnableApiGateway": {
+      "type": "boolean",
+      "description": "Whether to add or ensure an Amazon API Gateway trigger for the function during deployment.",
+      "default": true
     }
   }
 }

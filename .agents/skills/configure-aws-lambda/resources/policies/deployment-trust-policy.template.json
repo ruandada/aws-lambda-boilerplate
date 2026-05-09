@@ -9,7 +9,7 @@
       "Action": "sts:AssumeRole"
     },
     {
-      "Sid": "GitHubActionsOIDCTrust_{{GITHUB_OWNER}}_{{GITHUB_REPO}}",
+      "Sid": "GitHubActionsOIDCTrust{{SID_SUFFIX}}",
       "Effect": "Allow",
       "Principal": {
         "Federated": "{{OIDC_PROVIDER_ARN}}"

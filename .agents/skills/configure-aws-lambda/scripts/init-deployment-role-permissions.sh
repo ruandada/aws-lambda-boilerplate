@@ -38,6 +38,9 @@ main() {
   local resources_dir
   resources_dir="${SCRIPT_DIR}/../resources/policies"
 
+  local sid_suffix
+  sid_suffix="$(printf '%s-%s' "${GITHUB_OWNER}" "${GITHUB_REPO}" | sed 's/[^A-Za-z0-9]//g')"
+
   local trust_file
   trust_file="$(mktemp)"
   local current_trust_file
@@ -50,7 +53,8 @@ main() {
     "OIDC_PROVIDER_ARN=${provider_arn}" \
     "GITHUB_OWNER=${GITHUB_OWNER}" \
     "GITHUB_REPO=${GITHUB_REPO}" \
-    "GITHUB_BRANCH=${GITHUB_BRANCH}"
+    "GITHUB_BRANCH=${GITHUB_BRANCH}" \
+    "SID_SUFFIX=${sid_suffix}"
 
   if aws iam get-role --role-name "${DEPLOYMENT_ROLE_NAME}" >/dev/null 2>&1; then
     aws iam get-role \

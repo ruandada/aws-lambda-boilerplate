@@ -31,4 +31,3 @@ jobs:
           echo "sha=${{ steps.deploy.outputs.image-uri-sha }}"
           echo "tag=${{ steps.deploy.outputs.image-tag-sha }}"
           echo "url=${{ steps.deploy.outputs.lambda-url }}"
-          echo "apigw=${{ steps.deploy.outputs.api-gateway-url }}"

@@ -57,21 +57,6 @@
         "{{EXECUTION_ROLE_ARN}}",
         "arn:aws:iam::{{ACCOUNT_ID}}:role/{{DEPLOYMENT_ROLE_NAME}}"
       ]
-    },
-    {
-      "Sid": "ApiGatewayManage",
-      "Effect": "Allow",
-      "Action": [
-        "apigateway:GET",
-        "apigateway:POST",
-        "apigateway:PUT",
-        "apigateway:PATCH",
-        "apigateway:DELETE"
-      ],
-      "Resource": [
-        "arn:aws:apigateway:{{REGION}}::/apis",
-        "arn:aws:apigateway:{{REGION}}::/apis/*"
-      ]
     }
   ]
 }

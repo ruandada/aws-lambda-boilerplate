@@ -12,7 +12,7 @@ This repository includes:
   - `aws-lambda-typescript-docker-starter`
   - `aws-lambda-golang-docker-starter`
   - `aws-lambda-python-docker-starter`
-- A local agent skill (`/configure-aws-lambda`) to bootstrap AWS IAM + GitHub Actions deployment
+- A single setup script (`configure-aws-lambda.sh`) to bootstrap AWS IAM + GitHub Actions deployment
 
 ---
 
@@ -42,7 +42,7 @@ This repository includes:
 ├── aws-lambda-golang-docker-starter/        # Go starter Lambda project
 ├── aws-lambda-python-docker-starter/        # Python starter Lambda project
 ├── definition/aws-lambda.schema.json        # Schema for aws-lambda.yaml
-└── .agents/skills/configure-aws-lambda/     # Agent skill, scripts, templates, IAM policies
+└── configure-aws-lambda.sh                  # AWS IAM + GitHub Actions setup script
 ```
 
 ## Get Started
@@ -89,21 +89,33 @@ For detailed local workflows (event replay, extra commands, build checks), see:
 - `aws-lambda-golang-docker-starter/README.md`
 - `aws-lambda-python-docker-starter/README.md`
 
-### 3) **Talk** to your LLM agent, using skill to configure AWS + GitHub Actions
+### 3) Configure AWS + GitHub Actions deployment
 
-From repository root, run:
+For a Lambda project in a subdirectory, run from the repository root:
 
 ```bash
-/configure-aws-lambda my-lambda-service
+./configure-aws-lambda.sh my-lambda-service
 ```
 
-The skill guides you through:
+If the Lambda project is the repository root, omit the directory:
+
+```bash
+./configure-aws-lambda.sh
+```
+
+The script:
 
 - Validating AWS CLI/login status
-- Preparing and validating `aws-lambda.yaml`
-- Initializing OIDC provider for GitHub Actions
-- Creating/updating deployment and execution IAM roles
-- Generating workflow files under `.github/workflows/`
+- Creates or updates `aws-lambda.yaml`
+- Creates or reuses the GitHub Actions OIDC provider
+- Creates or incrementally updates deployment and execution IAM roles
+- Generates a workflow file under `.github/workflows/`
+
+Use `--dry-run` to generate local files without changing AWS IAM:
+
+```bash
+./configure-aws-lambda.sh --dry-run my-lambda-service
+```
 
 ### 4) Commit and push code to deploy
 

@@ -228,7 +228,11 @@ deployment_trust = {
                 },
                 "StringLike": {
                     "token.actions.githubusercontent.com:sub": [
-                        f'repo:{values["GITHUB_OWNER"]}/{values["GITHUB_REPO"]}:ref:refs/heads/{values["GITHUB_BRANCH"]}'
+                        # Classic format (repos created before 2026-07-15).
+                        f'repo:{values["GITHUB_OWNER"]}/{values["GITHUB_REPO"]}:ref:refs/heads/{values["GITHUB_BRANCH"]}',
+                        # Immutable-ID format (repos created on/after 2026-07-15):
+                        # repo:<owner>@<owner-id>/<repo>@<repo-id>:ref:refs/heads/<branch>
+                        f'repo:{values["GITHUB_OWNER"]}@*/{values["GITHUB_REPO"]}@*:ref:refs/heads/{values["GITHUB_BRANCH"]}',
                     ]
                 },
             },
